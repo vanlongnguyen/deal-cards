@@ -1,0 +1,40 @@
+<logging>
+ <log type="coverage-html" target="build/coverage"/>
+ <log type="coverage-clover" target="build/logs/clover.xml"/>
+ <log type="coverage-crap4j" target="build/logs/crap4j.xml"/>
+ <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+</logging>
+
+<phpdox xmlns="http://xml.phpdox.net/config">
+ <project name="name-of-project" source="src" workdir="build/phpdox">
+  <collector publiconly="false">
+   <include mask="*.php" />
+  </collector>
+
+  <generator output="build">
+   <build engine="html" enabled="true" output="api">
+    <file extension="html" />
+   </build>
+  </generator>
+ </project>
+</phpdox>
+
+<ruleset name="name-of-your-coding-standard">
+ <description>Description of your coding standard</description>
+
+ <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+ <!-- ... -->
+</ruleset>
+
+<ruleset name="name-of-your-coding-standard"
+  xmlns="https://pmd.sf.net/ruleset/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://pmd.sf.net/ruleset/1.0.0
+                      https://pmd.sf.net/ruleset_xml_schema.xsd"
+  xsi:noNamespaceSchemaLocation="https://pmd.sf.net/ruleset_xml_schema.xsd">
+  <description>Description of your coding standard</description>
+
+  <rule ref="rulesets/codesize.xml/CyclomaticComplexity" />
+  <!-- ... -->
+</ruleset>
+
