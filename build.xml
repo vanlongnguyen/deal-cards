@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="deal-cards" default="quick-build">
     <!--  By default, we assume all tools to be on the $PATH  -->
     <property name="pdepend" value="pdepend"/>
@@ -28,7 +29,7 @@
 
     <!-- <target name="full-build-parallel" depends="prepare,static-analysis-parallel,phpunit,phpdox,-check-failure" description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation"/> -->
 
-    <target name="quick-build" depends="prepare,lint,phpunit-no-coverage" description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
+    <target name="quick-build" depends="prepare,install_dependencies,phpunit" description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci" description="Performs static analysis"/>
     <!--  Adjust the threadCount attribute's value to the number of CPUs  -->
@@ -55,6 +56,15 @@
         <property name="clean.done" value="true"/>
     </target>
 
+    <target name="install_dependencies">
+        <exec executable="npm">
+            <arg value="install"/>
+        </exec>
+        <exec executable="composer">
+            <arg value="install"/>
+        </exec>
+    </target>
+
     <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/coverage"/>
@@ -78,6 +88,13 @@
         </apply>
         <property name="lint.done" value="true"/>
     </target>
+
+    <target name="phpunit" depends="composer">
+        <exec executable="phpunit">
+            <arg path="${basedir}/phpunit.xml"/>
+        </exec>
+    </target>
+
 
     <target name="phploc" unless="phploc.done" description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
         <exec executable="${phploc}" taskname="phploc">
