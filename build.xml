@@ -89,11 +89,11 @@
         <property name="lint.done" value="true"/>
     </target>
 
-    <target name="phpunit" depends="composer">
+    <!-- <target name="phpunit" depends="composer">
         <exec executable="phpunit">
             <arg path="${basedir}/phpunit.xml"/>
         </exec>
-    </target>
+    </target> -->
 
 
     <target name="phploc" unless="phploc.done" description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
