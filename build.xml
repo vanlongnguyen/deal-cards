@@ -29,38 +29,18 @@
 
     <!-- <target name="full-build-parallel" depends="prepare,static-analysis-parallel,phpunit,phpdox,-check-failure" description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation"/> -->
 
-    <target name="quick-build" depends="composerget,prepare,install_dependencies,phpunit" description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
+    <target name="quick-build" depends="composer,prepare,install_dependencies,phpunit" description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci" description="Performs static analysis"/>
     <!--  Adjust the threadCount attribute's value to the number of CPUs  -->
 
-    <target name="composerget" description="Install composer">
-        <exec executable="wget">
-            <arg value="-O" />
-            <arg value="composer-setup.sig" />
-            <arg value="https://composer.github.io/installer.sig" />
-        </exec>
-        <exec executable="wget">
-            <arg value="-O" />
-            <arg value="composer-setup.php" />
-            <arg value="https://getcomposer.org/installer" />
-        </exec>
-        <exec executable="bash">
-            <arg value="-c" />
-            <arg value="awk '{print $$0 &quot;  composer-setup.php&quot;}' composer-setup.sig | sha384sum --check" />
-        </exec>
-        <exec executable="php">
-            <arg value="composer-setup.php" />
-        </exec>
-        <exec executable="rm">
-            <arg value="composer-setup.php" />
-        </exec>
-        <exec executable="rm">
-            <arg value="composer-setup.sig" />
-        </exec>
-        <exec executable="mv">
-            <arg value="composer.phar" />
-            <arg value="composer" />
+    <target name="composer" description="Install composer packages including require-dev.">
+        <get src="https://getcomposer.org/download/1.2.1/composer.phar" dest="composer.phar"/>
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--no-progress"/>
         </exec>
     </target>
 
